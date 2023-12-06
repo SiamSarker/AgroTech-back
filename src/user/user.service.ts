@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Users } from 'src/models/user.model';
@@ -13,19 +13,21 @@ export class UserService {
     @InjectRepository(Users) private readonly userRepository: Repository<Users>,
   ) {}
 
-  userAuth(userCredential: UserCredDTO): boolean {
-    if (
-      userCredential.email === this.email &&
-      userCredential.password === this.password
-    ) {
-      return true;
-    } else {
-      return false;
+  async userAuth(userCredential: UserCredDTO): Promise<Users | null> {
+    const user = await this.userRepository.findOne({
+      where: { email: userCredential.email, password: userCredential.password },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
     }
+
+    return user;
   }
 
   async createUser(createUserDTO: CreateUserDto) {
-    const result = await this.userRepository.save(createUserDTO);
+    const user = this.userRepository.create(createUserDTO);
+    const result = await this.userRepository.save(user);
     return result;
   }
 
