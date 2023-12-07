@@ -1,6 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+// user.model.ts
 
-@Entity({ name: 'users' })
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Products } from './product.model';
+
+@Entity('users')
 export class Users {
   @PrimaryGeneratedColumn()
   id: number;
@@ -22,4 +25,7 @@ export class Users {
 
   @Column({ length: 50, default: 'buyer', nullable: true })
   role: string;
+
+  @OneToMany(() => Products, (product) => product.farmer)
+  products: Products[];
 }
