@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { ProductsModule } from './products/products.module';
+import { CartModule } from './cart/cart.module';
 import DatabaseConnection from './database/connection';
 
 @Module({
@@ -17,6 +18,7 @@ import DatabaseConnection from './database/connection';
     }),
     UserModule,
     ProductsModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],

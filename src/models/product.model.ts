@@ -8,8 +8,10 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Users } from './user.model';
+import { Cart } from './cart.model';
 
 @Entity('products')
 export class Products {
@@ -43,4 +45,7 @@ export class Products {
   @ManyToOne(() => Users, (user) => user.products)
   @JoinColumn({ name: 'farmer_id' })
   farmer: Users;
+
+  @OneToMany(() => Cart, (cart) => cart.product)
+  cartEntries: Cart[];
 }

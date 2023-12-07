@@ -2,6 +2,7 @@
 
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Products } from './product.model';
+import { Cart } from './cart.model';
 
 @Entity('users')
 export class Users {
@@ -28,4 +29,7 @@ export class Users {
 
   @OneToMany(() => Products, (product) => product.farmer)
   products: Products[];
+
+  @OneToMany(() => Cart, (cart) => cart.buyer) // Add this line for the Cart relationship
+  cartEntries: Cart[];
 }
