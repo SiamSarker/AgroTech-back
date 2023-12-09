@@ -19,7 +19,23 @@ export class CartService {
   }
 
   async findAll(): Promise<Cart[]> {
-    return this.cartRepository.find();
+    const response = await this.cartRepository.find({
+      relations: ['product'],
+      select: [
+        'id',
+        'product_id',
+        'buyer_id',
+        'selected_quantity',
+        'total_price',
+        'status',
+        'created_at',
+        'updated_at',
+        'product',
+      ],
+    });
+
+    console.log(response);
+    return response;
   }
 
   async findOne(id: number): Promise<Cart | undefined> {
